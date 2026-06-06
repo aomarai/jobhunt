@@ -1,5 +1,5 @@
 def main():
-    print("Hello from jobhunt!")
+    print("Hello from jobhunt-backend!")
 
 
 if __name__ == "__main__":
