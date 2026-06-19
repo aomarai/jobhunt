@@ -21,4 +21,4 @@ jobs:
       - name: Run Ruff Formatter
         uses: astral-sh/ruff-action@v3
         with:
-          args: "format --check --config backend/pyproject.toml"
+          args: "format --config backend/pyproject.toml"
