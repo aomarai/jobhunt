@@ -3,7 +3,7 @@ from pathlib import Path
 from pydantic import PostgresDsn, RedisDsn
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-BASE_DIR = Path(__file__).resolve()
+BASE_DIR = Path(__file__).resolve().parent.parent
 class Settings(BaseSettings):
     database_url: PostgresDsn
     redis_url: RedisDsn
