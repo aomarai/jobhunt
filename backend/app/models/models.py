@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 import uuid
 from datetime import datetime
 
@@ -7,7 +7,9 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.dialects.postgresql import UUID
 
 from app.database import Base
-from app.models.junctions import StageQuestion
+
+if TYPE_CHECKING:
+    from app.models.junctions import StageQuestion
 
 
 class User(Base):
