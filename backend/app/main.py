@@ -5,8 +5,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 
-from app.database import get_session
-from app.utils import sanitize_string, get_logger
+from database import get_session
+from utils import sanitize_string, get_logger
 
 logging.basicConfig(
     level=logging.INFO,
