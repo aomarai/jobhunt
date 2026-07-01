@@ -1,9 +1,22 @@
+import logging
+import sys
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 
 from app.database import get_session
-from app.utils import sanitize_string
+from app.utils import sanitize_string, get_logger
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    handlers=[
+        logging.StreamHandler(sys.stdout)
+    ]
+)
+
+logger = logging.getLogger("JobHuntr")
 
 app = FastAPI(
     title="JobHuntr",
@@ -27,6 +40,6 @@ async def root():
             db.execute(text("SELECT 1"))
         health["database"] = "connected"
     except Exception as e:
-        health["error"] = f"An error occurred: {sanitize_string(e)}"
+        health["error"] = f"An error occurred: {sanitize_string(str(e))}"
     
     return health
