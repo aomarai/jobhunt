@@ -10,7 +10,6 @@ from app.config import settings
 
 pwd_context = CryptContext(default="argon2", schemes=["argon2"], deprecated="auto")
 
-@staticmethod
 def hash_password(password: str) -> str:
     """
     Hashes a password using the password context object to select an algorithm.
@@ -31,7 +30,6 @@ def get_user_by_email(db: Session, email: str) -> Optional[User]:
     Retrieve a user's information via their email address.
     Returns a User object if found, or None if no user is found with the provided email.
     """
-    
     return db.query(User).filter(User.email == email).one_or_none()
 
 

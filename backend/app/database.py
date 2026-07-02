@@ -1,5 +1,5 @@
 from contextlib import contextmanager
-from typing import Iterator
+from typing import Iterator, Generator
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker, DeclarativeBase
 from app.config import settings
@@ -15,8 +15,7 @@ class Base(DeclarativeBase):
     pass
 
 
-@contextmanager
-def get_session() -> Iterator[Session]:
+def get_session() -> Generator[Session, None, None]:
     """
     Returns a database connection session.
     """

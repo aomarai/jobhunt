@@ -2,7 +2,6 @@ from logging import Logger
 import logging
 import re
 
-@staticmethod
 def sanitize_string(string: str):
     return re.sub(r"[\t\n\r]+", " ", string)
 
