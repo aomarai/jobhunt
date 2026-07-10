@@ -9,7 +9,7 @@ from app.database import get_session
 from app.routes.auth import router as auth_router
 from app.routes.applications import router as applications_router
 from app.routes.companies import router as company_router
-from app.utils import sanitize_string, get_logger
+from app.utils import get_logger
 
 logging.basicConfig(
     level=logging.INFO,
@@ -47,6 +47,7 @@ async def root():
         db.execute(text("SELECT 1"))
         health["database"] = "connected"
     except Exception as e:
-        health["error"] = f"An error occurred: {sanitize_string(str(e))}"
+        health["error"] = "An unexpected error occurred."
+        logger.error(e)
     
     return health
