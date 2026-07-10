@@ -6,6 +6,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 BASE_DIR = Path(__file__).resolve().parent.parent
 class Settings(BaseSettings):
     database_url: PostgresDsn
+    test_database_url: PostgresDsn
     redis_url: RedisDsn
     
     # JWT
