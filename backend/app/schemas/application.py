@@ -25,6 +25,7 @@ class ApplicationResponse(BaseModel):
     job_id: Optional[str]
     job_title: str
     job_url: Optional[str]
+    status: str
     notes: Optional[str]
     applied_at: datetime
     updated_at: datetime

@@ -45,7 +45,7 @@ def list_applications(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_session)
 ):
-    return db.query(Application).filter(Application.user_id == current_user.id).order_by(Application.applied_at.desc).all()
+    return db.query(Application).filter(Application.user_id == current_user.id).order_by(Application.applied_at.desc()).all()
 
 
 @router.get("/{application_id}", response_model=ApplicationResponse)
@@ -81,17 +81,10 @@ def delete_application(
     db: Session = Depends(get_session)
 ):
     application = _get_owned_application(db, application_id, current_user.id)
-    if not application:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Application not found"
-        )
-    if application.user_id != current_user.id:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Not authorized to access this application"
-        )
-    return application
+    
+    db.delete(application)
+    db.commit()
+    return None
 
 
 def _get_owned_application(
@@ -99,15 +92,17 @@ def _get_owned_application(
     application_id: UUID,
     user_id: UUID
 ):
-    application = db.query(Application).filter(Application.id == application_id).one()
+    application = db.query(Application).filter(Application.id == application_id).one_or_none()
+    
     if not application:
         raise HTTPException(
             status_code = status.HTTP_404_NOT_FOUND,
             detail = "Application not found"
         )
+    
     if application.user_id != user_id:
         raise HTTPException(
-            status_code = status.HTTP_401_UNAUTHORIZED,
+            status_code = status.HTTP_403_FORBIDDEN,
             detail="Not authorized to access this application"
         )
     return application

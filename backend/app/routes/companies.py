@@ -58,6 +58,12 @@ def update_company(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_session)
 ):
+    if not current_user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="You must be logged in to perform this action"
+        )
+    
     company = db.query(Company).filter(Company.id == company_id).one_or_none()
     if not company:
         raise HTTPException(
@@ -80,6 +86,12 @@ def delete_company(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_session)
 ):
+    if not current_user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="You must be logged in to perform this action"
+        )
+    
     company = db.query(Company).filter(Company.id == company_id).one_or_none()
     if not company:
         raise HTTPException(
