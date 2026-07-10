@@ -1,4 +1,3 @@
-import os
 import pytest
 import uuid
 from sqlalchemy import create_engine, text
@@ -86,8 +85,9 @@ def create_company(client, api_login):
     """Returns a factory function to create a company with custom details."""
     auth_token = api_login
     headers = {"Authorization": f"Bearer {auth_token}"}
+    default_company_name = str(uuid.uuid4())
     
-    def _create_company(name="Default Corp", website="https://example.com", notes="Test notes"):
+    def _create_company(name=str(uuid.uuid4()), website=f"https://{default_company_name}.com", notes=f"I love {default_company_name}"):
         response = client.post(
             "/companies",
             json={
