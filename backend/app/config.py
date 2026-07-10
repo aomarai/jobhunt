@@ -10,8 +10,11 @@ class Settings(BaseSettings):
     
     # JWT
     secret_key: str
-    algorithm: str = "HS256"
+    jwt_algorithms: list[str] = ["HS256"]
     access_token_expire_minutes: int = 30
+
+    # Password hashing
+    algorithm: str = "argon2"
     
     # Email
     mail_username: str

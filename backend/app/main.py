@@ -1,11 +1,25 @@
-from fastapi import FastAPI, Depends
+import logging
+import sys
+
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
-from sqlalchemy.orm import Session
 
-from app.config import settings
 from app.database import get_session
-from app.utils import sanitize_string
+from app.routes.auth import router as auth_router
+from app.routes.applications import router as applications_router
+from app.routes.companies import router as company_router
+from app.utils import sanitize_string, get_logger
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    handlers=[
+        logging.StreamHandler(sys.stdout)
+    ]
+)
+
+logger = get_logger()
 
 app = FastAPI(
     title="JobHuntr",
@@ -20,15 +34,19 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
+logger.debug("Loading auth routes")
+app.include_router(auth_router)
+app.include_router(applications_router)
+app.include_router(company_router)
 
 @app.get("/health")
 async def root():
     health = {"status": "ok", "database": "unreachable"}
     try:
-        with get_session() as db: 
-            db.execute(text("SELECT 1"))
+        db = next(get_session())
+        db.execute(text("SELECT 1"))
         health["database"] = "connected"
     except Exception as e:
-        health["error"] = f"An error occurred: {sanitize_string(e)}"
+        health["error"] = f"An error occurred: {sanitize_string(str(e))}"
     
     return health
