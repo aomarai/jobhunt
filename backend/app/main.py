@@ -47,6 +47,7 @@ async def root():
         db.execute(text("SELECT 1"))
         health["database"] = "connected"
     except Exception as e:
-        health["error"] = f"An error occurred: {sanitize_string(str(e))}"
+        health["error"] = f"An unexpected error occurred."
+        logger.error(e)
     
     return health
