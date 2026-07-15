@@ -9,6 +9,7 @@ from app.database import get_session
 from app.routes.auth import router as auth_router
 from app.routes.applications import router as applications_router
 from app.routes.companies import router as company_router
+from app.routes.stages import router as stages_router
 from app.utils import get_logger
 
 logging.basicConfig(
@@ -38,6 +39,7 @@ logger.debug("Loading auth routes")
 app.include_router(auth_router)
 app.include_router(applications_router)
 app.include_router(company_router)
+app.include_router(stages_router)
 
 @app.get("/health")
 async def root():
